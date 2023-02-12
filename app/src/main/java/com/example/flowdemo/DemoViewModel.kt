@@ -8,6 +8,10 @@ class DemoViewModel : ViewModel() {
 
     val myFlow: Flow<Int> = flow {
         // Producer block
+        for (i in 0..9) {
+            emit(i)
+            delay(2000)
+        }
     }
 
 }
