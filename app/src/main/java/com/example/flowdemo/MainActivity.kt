@@ -12,6 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.flowdemo.ui.theme.FlowDemoTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.*
+import kotlinx.coroutines.flow.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,18 +38,25 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ScreenSetup(viewModel: DemoViewModel = viewModel()) {
-    MainScreen()
+    MainScreen(viewModel.myFlow)
 }
 
 @Composable
-fun MainScreen() {
-
+fun MainScreen(flow: Flow<Int>) {
+    val count by flow.collectAsState(initial = 0)
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "$count", style = TextStyle(fontSize = 40.sp))
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     FlowDemoTheme {
-
+        ScreenSetup(viewModel())
     }
 }
