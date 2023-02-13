@@ -46,7 +46,24 @@ fun ScreenSetup(viewModel: DemoViewModel = viewModel()) {
 //fun MainScreen(flow: Flow<Int>) {
 fun MainScreen(flow: Flow<String>) {
     //val count by flow.collectAsState(initial = 0)
-    val count by flow.collectAsState(initial = "Current value =")
+    //val count by flow.collectAsState(initial = "Current value =")
+    var count by remember { mutableStateOf<String>("Current value =") }
+
+    /*LaunchedEffect(key1 = Unit, block = {
+        flow.collect {
+            count = it
+        }
+    })*/
+    LaunchedEffect(Unit) {
+        try {
+            flow.collect {
+                count = it
+            }
+        } finally {
+            count = "Flow stream ended."
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
