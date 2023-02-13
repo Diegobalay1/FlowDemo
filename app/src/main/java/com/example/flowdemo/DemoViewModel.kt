@@ -14,4 +14,20 @@ class DemoViewModel : ViewModel() {
         }
     }
 
+    val newFlow = myFlow
+        /*.filter {
+            it % 2 == 0
+        }
+        .map {
+            "Current value = $it"
+        }*/
+        /*.transform {
+            emit("Value = $it")
+            delay(1000)
+            val doubled = it * 2
+            emit("Value doubled = $doubled")
+        }*/
+        .map {
+            "Current value = $it"
+        }
 }

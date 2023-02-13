@@ -38,12 +38,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ScreenSetup(viewModel: DemoViewModel = viewModel()) {
-    MainScreen(viewModel.myFlow)
+    //MainScreen(viewModel.myFlow)
+    MainScreen(viewModel.newFlow)
 }
 
 @Composable
-fun MainScreen(flow: Flow<Int>) {
-    val count by flow.collectAsState(initial = 0)
+//fun MainScreen(flow: Flow<Int>) {
+fun MainScreen(flow: Flow<String>) {
+    //val count by flow.collectAsState(initial = 0)
+    val count by flow.collectAsState(initial = "Current value =")
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
