@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
+import kotlin.system.measureTimeMillis
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +56,7 @@ fun MainScreen(flow: Flow<String>) {
             count = it
         }
     })*/
-    LaunchedEffect(Unit) {
+    /*LaunchedEffect(Unit) {
         try {
             flow.collect {
                 count = it
@@ -62,6 +64,17 @@ fun MainScreen(flow: Flow<String>) {
         } finally {
             count = "Flow stream ended."
         }
+    }*/
+    LaunchedEffect(Unit) {
+        val elapsedTime = measureTimeMillis {
+            flow
+                .buffer()
+                .collect {
+                    count = it
+                    delay(1000)
+            }
+        }
+        count = "Duration = $elapsedTime"
     }
 
     Column(
