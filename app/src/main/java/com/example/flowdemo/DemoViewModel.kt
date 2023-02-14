@@ -30,4 +30,24 @@ class DemoViewModel : ViewModel() {
         .map {
             "Current value = $it"
         }
+
+    val myFlowflattening: Flow<Int> = flow {
+        for (i in 1..5) {
+            delay(1000)
+            emit(i)
+        }
+    }
+    fun doubleIt(value: Int) = flow {
+        emit(value)
+        delay(1000)
+        emit(value + value)
+    }
+
 }
+
+
+
+
+
+
+

@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
+                    ScreenSetup()
                 }
             }
         }
@@ -40,12 +40,14 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ScreenSetup(viewModel: DemoViewModel = viewModel()) {
-    MainScreen(viewModel.myFlow)
+    //MainScreen(viewModel.myFlow)
     //MainScreen(viewModel.newFlow)
+    MainScreen(viewModel)
 }
 
 @Composable
-fun MainScreen(flow: Flow<Int>) {
+fun MainScreen(viewModel: DemoViewModel) {
+//fun MainScreen(flow: Flow<Int>) {
 //fun MainScreen(flow: Flow<String>) {
     //val count by flow.collectAsState(initial = 0)
     //val count by flow.collectAsState(initial = "Current value =")
@@ -77,12 +79,22 @@ fun MainScreen(flow: Flow<Int>) {
         }
         count = "Duration = $elapsedTime"
     }*/
-    LaunchedEffect(Unit) {
+    /*LaunchedEffect(Unit) {
         flow
             //.reduce { accumulator, value ->
             .fold(initial = 10) { accumulator, value ->
                 count = accumulator
                 accumulator + value
+            }
+    }*/
+
+    LaunchedEffect(Unit) {
+        viewModel.myFlowflattening
+            //.flatMapConcat { viewModel.doubleIt(it) }
+            .flatMapMerge { viewModel.doubleIt(it) }
+            .collect {
+                count = it
+                println("Count = $it")
             }
     }
 
