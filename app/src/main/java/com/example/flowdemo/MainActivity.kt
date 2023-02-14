@@ -40,16 +40,17 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ScreenSetup(viewModel: DemoViewModel = viewModel()) {
-    //MainScreen(viewModel.myFlow)
-    MainScreen(viewModel.newFlow)
+    MainScreen(viewModel.myFlow)
+    //MainScreen(viewModel.newFlow)
 }
 
 @Composable
-//fun MainScreen(flow: Flow<Int>) {
-fun MainScreen(flow: Flow<String>) {
+fun MainScreen(flow: Flow<Int>) {
+//fun MainScreen(flow: Flow<String>) {
     //val count by flow.collectAsState(initial = 0)
     //val count by flow.collectAsState(initial = "Current value =")
-    var count by remember { mutableStateOf<String>("Current value =") }
+    //var count by remember { mutableStateOf<String>("Current value =") }
+    var count by remember { mutableStateOf<Int>(0) }
 
     /*LaunchedEffect(key1 = Unit, block = {
         flow.collect {
@@ -65,7 +66,7 @@ fun MainScreen(flow: Flow<String>) {
             count = "Flow stream ended."
         }
     }*/
-    LaunchedEffect(Unit) {
+    /*LaunchedEffect(Unit) {
         val elapsedTime = measureTimeMillis {
             flow
                 .buffer()
@@ -75,6 +76,14 @@ fun MainScreen(flow: Flow<String>) {
             }
         }
         count = "Duration = $elapsedTime"
+    }*/
+    LaunchedEffect(Unit) {
+        flow
+            //.reduce { accumulator, value ->
+            .fold(initial = 10) { accumulator, value ->
+                count = accumulator
+                accumulator + value
+            }
     }
 
     Column(
