@@ -6,6 +6,13 @@ import kotlinx.coroutines.flow.*
 
 class DemoViewModel : ViewModel() {
 
+    private val _stateFlow = MutableStateFlow(0)
+    val stateFlow = _stateFlow.asStateFlow()
+
+    fun increaseValue() {
+        _stateFlow.value += 1
+    }
+
     val myFlow: Flow<Int> = flow {
         // Producer block
         for (i in 0..9) {

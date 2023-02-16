@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.*
 import kotlinx.coroutines.flow.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
@@ -54,6 +55,7 @@ fun MainScreen(viewModel: DemoViewModel) {
     //var count by remember { mutableStateOf<String>("Current value =") }
     //var count by remember { mutableStateOf<Int>(0) }
     var count by remember { mutableStateOf<String>("") }
+    val count2 by viewModel.stateFlow.collectAsState()
 
     LaunchedEffect(Unit) {
         val flow1 = (1..5).asFlow()
@@ -116,6 +118,10 @@ fun MainScreen(viewModel: DemoViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "$count", style = TextStyle(fontSize = 40.sp))
+        Text(text = "$count2", style = TextStyle(fontSize = 40.sp))
+        Button(onClick = { viewModel.increaseValue() }) {
+            Text(text = "Click Me")
+        }
     }
 }
 
