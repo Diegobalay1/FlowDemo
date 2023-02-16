@@ -52,7 +52,19 @@ fun MainScreen(viewModel: DemoViewModel) {
     //val count by flow.collectAsState(initial = 0)
     //val count by flow.collectAsState(initial = "Current value =")
     //var count by remember { mutableStateOf<String>("Current value =") }
-    var count by remember { mutableStateOf<Int>(0) }
+    //var count by remember { mutableStateOf<Int>(0) }
+    var count by remember { mutableStateOf<String>("") }
+
+    LaunchedEffect(Unit) {
+        val flow1 = (1..5).asFlow()
+            .onEach { delay(1000) }
+        val flow2 = flowOf("one", "two", "three", "four")
+            .onEach { delay(1500) }
+        flow1.zip(flow2) { value, string -> "$value, $string" }
+            .collect { count = it }
+        /*flow1.combine(flow2) { value, string -> "$value, $string" }
+            .collect { count = it }*/
+    }
 
     /*LaunchedEffect(key1 = Unit, block = {
         flow.collect {
@@ -88,7 +100,7 @@ fun MainScreen(viewModel: DemoViewModel) {
             }
     }*/
 
-    LaunchedEffect(Unit) {
+    /*LaunchedEffect(Unit) {
         viewModel.myFlowflattening
             //.flatMapConcat { viewModel.doubleIt(it) }
             .flatMapMerge { viewModel.doubleIt(it) }
@@ -96,7 +108,7 @@ fun MainScreen(viewModel: DemoViewModel) {
                 count = it
                 println("Count = $it")
             }
-    }
+    }*/
 
     Column(
         modifier = Modifier.fillMaxSize(),
