@@ -3,8 +3,28 @@ package com.example.flowdemo
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.channels.BufferOverflow
 
 class DemoViewModel : ViewModel() {
+
+    private val _sharedFlow = MutableSharedFlow<Int>(
+        replay = 10,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val sharedFlow = _sharedFlow.asSharedFlow()
+
+    val subCount = _sharedFlow.subscriptionCount.value
+
+    fun startSharedFlow() {
+        viewModelScope.launch {
+            for (i in 1..5) {
+                _sharedFlow.emit(i)
+                delay(2000)
+            }
+        }
+    }
 
     private val _stateFlow = MutableStateFlow(0)
     val stateFlow = _stateFlow.asStateFlow()

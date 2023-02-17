@@ -56,6 +56,8 @@ fun MainScreen(viewModel: DemoViewModel) {
     //var count by remember { mutableStateOf<Int>(0) }
     var count by remember { mutableStateOf<String>("") }
     val count2 by viewModel.stateFlow.collectAsState()
+    val count3 by viewModel.sharedFlow.collectAsState(initial = 0)
+    val subCount = viewModel.subCount
 
     LaunchedEffect(Unit) {
         val flow1 = (1..5).asFlow()
@@ -112,6 +114,8 @@ fun MainScreen(viewModel: DemoViewModel) {
             }
     }*/
 
+
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -122,6 +126,11 @@ fun MainScreen(viewModel: DemoViewModel) {
         Button(onClick = { viewModel.increaseValue() }) {
             Text(text = "Click Me")
         }
+        Text(text = "$count3", style = TextStyle(fontSize = 40.sp))
+        Button(onClick = { viewModel.startSharedFlow() }) {
+            Text(text = "Click Me Shared")
+        }
+        Text(text = "$subCount")
     }
 }
 
